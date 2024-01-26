@@ -6,8 +6,8 @@ def creds_entered():
     entered_password = st.session_state["passwd"].strip()
 
     users = [
-        {'username': 'Emily', 'password': 'pass123', 'organization': 'user_1'},
-        {'username': 'Benjamin', 'password': 'pass456', 'organization': 'user_2'}
+        {'username': 'Emily', 'password': 'pass123', 'department': 'user_1'},
+        {'username': 'Benjamin', 'password': 'pass456', 'department': 'user_2'}
     ]
 
     authenticated = False
@@ -22,9 +22,9 @@ def creds_entered():
 
     st.session_state["authenticated"] = authenticated
     if authenticated == True:
-        # If the user is successfully authenticated then store the username and the user org in the session state
+        # If the user is successfully authenticated then store the username and the user department in the session state
         st.session_state["user"] = selectedUser['username']
-        st.session_state["org"] = selectedUser['organization']
+        st.session_state["department"] = selectedUser['department']
 
     if not authenticated:
         # If the user is not authenticated then throw error
@@ -49,10 +49,11 @@ if authenticate_user():
         username = st.session_state["user"]
         st.title(f"Hello {username}")
         st.session_state["user"] = username
-        st.session_state["org"] = st.session_state["org"]
+        st.session_state["department"] = st.session_state["department"]
 
+    department_name = st.session_state["department"]
     query_generator_llm_chain = rag_chat_bot.query_generator_llm()
-    quadrant_retriever = rag_chat_bot.get_qdrant_retriever()
+    quadrant_retriever = rag_chat_bot.get_qdrant_retriever(department_name)
 
     st.title("Student RAG Chatbot")
 

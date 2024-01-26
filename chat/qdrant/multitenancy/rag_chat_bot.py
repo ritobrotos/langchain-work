@@ -29,36 +29,38 @@ def query_generator_llm():
         input_variables=["chat_history", "human_input"], template=template
     )
 
-    # memory = VectorStoreRetrieverMemory(retriever=retriever, memory_key="chat_history")
     memory = ConversationBufferMemory(memory_key="chat_history")
+
+    print("Instantiating query generator LLM chain with memory")
 
     return LLMChain(
         llm=OpenAI(),
         prompt=prompt,
-        verbose=True,
+        verbose=False,
         memory=memory
     )
 
 
 @st.cache_resource
-def get_qdrant_retriever():
+def get_qdrant_retriever(department_name):
+    print("Creating retriever for department: ", department_name)
     embeddings = OpenAIEmbeddings()
     qdrantClient = qdrant_client.QdrantClient(
         url=QDRANT_URL,
         prefer_grpc=True,
         api_key=QDRANT_API_KEY)
     qdrant = Qdrant(qdrantClient, "my_documents", embeddings)
-    return qdrant.as_retriever(search_kwargs={'filter': {'group_id': 'user_2'}})
-
+    return qdrant.as_retriever(search_kwargs={'filter': {'group_id': department_name}})
 
 
 def get_docs_from_vector_store(formed_question, retriever):
     resultDocs = retriever.get_relevant_documents(formed_question)
     if len(resultDocs) > 0:
         retrieved_doc = resultDocs[0].page_content
-        print("retrieved_doc: ", retrieved_doc)
+        print("Retrieved document: ", retrieved_doc)
         return retrieved_doc
     else:
+        print("No documents found")
         return "No response"
 
 
@@ -72,8 +74,11 @@ def answer_questions(document_data, formed_question):
         input_variables=["document", "question"], template=template
     )
 
-    return LLMChain(
+    print("Calling LLM to fetch answer of the question: ", formed_question)
+    llm_answer = LLMChain(
         llm=ChatOpenAI(),
         prompt=prompt,
-        verbose=True,
+        verbose=False,
     ).run(document=document_data, question=formed_question)
+    print("Answer returned by LLM: ", llm_answer)
+    return llm_answer
