@@ -54,10 +54,12 @@ def get_qdrant_retriever(department_name):
 
 
 def get_docs_from_vector_store(formed_question, retriever):
+    print("LLM formed question: ", formed_question)
     resultDocs = retriever.get_relevant_documents(formed_question)
+    print("Number of documents found: ", len(resultDocs))
     if len(resultDocs) > 0:
         retrieved_doc = resultDocs[0].page_content
-        # print("Retrieved document: ", retrieved_doc)
+        print("Retrieved document: ", retrieved_doc)
         return retrieved_doc
     else:
         print("No documents found")
