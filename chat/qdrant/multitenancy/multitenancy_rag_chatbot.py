@@ -57,7 +57,7 @@ def get_docs_from_vector_store(formed_question, retriever):
     resultDocs = retriever.get_relevant_documents(formed_question)
     if len(resultDocs) > 0:
         retrieved_doc = resultDocs[0].page_content
-        print("Retrieved document: ", retrieved_doc)
+        # print("Retrieved document: ", retrieved_doc)
         return retrieved_doc
     else:
         print("No documents found")
