@@ -1,0 +1,3 @@
+VECTOR_DB_COLLECTION = "department_data"
+HISTORY_DEPARTMENT_NAME = "history"
+SCIENCE_DEPARTMENT_NAME = "science"
