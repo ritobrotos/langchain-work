@@ -1,25 +1,28 @@
+import os
+
 from langchain_openai import OpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 import qdrant_client
-from constants import QDRANT_URL, QDRANT_API_KEY
+
+from multitenancy_constants import VECTOR_DB_COLLECTION
 from langchain_community.vectorstores import Qdrant
 from langchain_openai import OpenAIEmbeddings
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
+
+QDRANT_URL = os.getenv("QDRANT_URL")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 
 @st.cache_resource
 def query_generator_llm():
-    template = """Given the following user prompt and conversation log, formulate a question that would be the most relevant to provide the user with an answer from a knowledge base.
-      You should follow the following rules when generating and answer:
-      - Always prioritize the user prompt over the conversation log.
-      - Ignore any conversation log that is not directly related to the user prompt.
-      - Only attempt to answer if a question was posed.
-      - The question should be a single sentence.
-      - You should remove any punctuation from the question.
-      - You should remove any words that are not relevant to the question.
-      - If you are unable to formulate a question, respond with the same USER PROMPT you got.
+    template = """Compose a question based on the provided user prompt and conversation log to ensure the most pertinent information is extracted from the knowledge base for the user's answer.
+      You are instructed to follow the below instructions when generating the question:
+      - Prioritize the human input at all times, giving it precedence over the conversation log.
+      - Disregard any conversation log that does not directly pertain to the human input.
+      - Respond only when a question has been explicitly posed.
+      - Frame the question as a single sentence.
 
     {chat_history}
     {human_input}
@@ -49,7 +52,7 @@ def get_qdrant_retriever(department_name):
         url=QDRANT_URL,
         prefer_grpc=True,
         api_key=QDRANT_API_KEY)
-    qdrant = Qdrant(qdrantClient, "my_documents", embeddings)
+    qdrant = Qdrant(qdrantClient, VECTOR_DB_COLLECTION, embeddings)
     return qdrant.as_retriever(search_kwargs={'filter': {'group_id': department_name}})
 
 

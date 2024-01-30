@@ -1,3 +1,5 @@
+import os
+
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Qdrant
@@ -5,11 +7,9 @@ from langchain_openai import OpenAIEmbeddings
 
 from chat.qdrant.multitenancy.multitenancy_constants import VECTOR_DB_COLLECTION, HISTORY_DEPARTMENT_NAME, \
     SCIENCE_DEPARTMENT_NAME
-from constants import QDRANT_URL, QDRANT_API_KEY
 
-
-
-
+QDRANT_URL = os.getenv("QDRANT_URL")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 
 CHUNK_SIZE = 1500
 CHUNK_OVERLAP = 300
