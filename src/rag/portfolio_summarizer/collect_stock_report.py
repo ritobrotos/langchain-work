@@ -10,7 +10,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms import Ollama
 from langchain_community.vectorstores import Qdrant
 
-from chat.portfolio_summarizer.portfolio_summarizer_constants import VECTOR_DB_COLLECTION, portfolio
+from rag.portfolio_summarizer.portfolio_summarizer_constants import VECTOR_DB_COLLECTION, portfolio
 
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")

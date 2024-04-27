@@ -1,12 +1,16 @@
-from langchain import OpenAI
+# from langchain import OpenAI
+from langchain_community.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
-from langchain import LLMChain, PromptTemplate
+# from langchain import LLMChain, PromptTemplate
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+
 
 
 def get_conversation_memory_chat():
     template = """You are a chatbot of Hyper SuperMarket who is having a conversation with a human. 
     
-    Greet the Human with the following message at the beginning of the chat: 
+    Greet the Human with the following message at the beginning of the rag: 
     "Thanks for contacting Hyper SuperMarket. How can I help you today?"
     
     If you are asked a question which is out of context then reply the following: 

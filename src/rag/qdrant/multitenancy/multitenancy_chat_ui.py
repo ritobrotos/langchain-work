@@ -42,26 +42,26 @@ if authenticate_user():
 
     st.title("Student RAG Chatbot")
 
-    # Initialize chat history
+    # Initialize rag history
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # Display chat messages from history on app rerun
+    # Display rag messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     # Accept user input
     if human_message := st.chat_input(""):
-        # Add user message to chat history
+        # Add user message to rag history
         st.session_state.messages.append({"role": "user", "content": human_message})
-        # Display user message in chat message container
+        # Display user message in rag message container
         with st.chat_message("user"):
             st.markdown(human_message)
-        # Display assistant response in chat message container
+        # Display assistant response in rag message container
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
-            # Form question based on the users last message and chat history
+            # Form question based on the users last message and rag history
             formed_question = query_generator_llm_chain.run(human_message)
             # Fetch document from Vector store
             relevant_doc = multitenancy_rag_chatbot.get_docs_from_vector_store(formed_question, quadrant_retriever)

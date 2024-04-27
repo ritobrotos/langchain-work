@@ -4,7 +4,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 
 
 def store_embeddings(content_list):
-    text_splitter = RecursiveCharacterTextSplitter(separators=["\n\n", "\n"], chunk_size=1000, chunk_overlap=150)
+    text_splitter = RecursiveCharacterTextSplitter(separators=["\n\n", "\n"], chunk_size=3000, chunk_overlap=300)
     docs = text_splitter.create_documents(content_list)
 
     embeddings = OpenAIEmbeddings()

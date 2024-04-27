@@ -5,7 +5,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Qdrant
 from langchain_openai import OpenAIEmbeddings
 
-from chat.qdrant.multitenancy.multitenancy_constants import VECTOR_DB_COLLECTION, HISTORY_DEPARTMENT_NAME, \
+from rag.qdrant.multitenancy.multitenancy_constants import VECTOR_DB_COLLECTION, HISTORY_DEPARTMENT_NAME, \
     SCIENCE_DEPARTMENT_NAME
 
 QDRANT_URL = os.getenv("QDRANT_URL")
